@@ -1,0 +1,91 @@
+<div *ngIf="type=='image'">
+
+    <ion-slides slidesPerView="auto" dir="{{shared.dir}}" id="slides">
+      <ion-slide class="swiper-slide-lg" [class.selected]="selected==''" *ngIf="shared.allCategories!=null" (click)="changeTab('')">
+        <h2 style="padding-top:2px; padding-bottom:2px;"><img src="assets/home-page/category.png"></h2>
+        <h3>{{'All'|translate}}</h3>
+      </ion-slide>
+      <ion-slide class="swiper-slide-lg" [class.selected]="selected==c.id" *ngFor="let c of shared.allCategories" (click)="changeTab(c)">
+        <h2>
+          <img *ngIf="c.image" src="{{c.image.src}}">
+        </h2>
+        <h3>{{c.name}}</h3>
+      </ion-slide>
+    </ion-slides>
+  
+  </div>
+  
+  <div *ngIf="type!='image'">
+    <ion-slides slidesPerView="auto" dir="{{shared.dir}}">
+      <ion-slide [class.selected]="selected==''" *ngIf="shared.allCategories!=null" (click)="changeTab('')">
+        {{'All'|translate}}
+      </ion-slide>
+      <ion-slide [class.selected]="selected==c.id" *ngFor="let c of shared.allCategories" (click)="changeTab(c)">
+        {{c.name}}
+      </ion-slide>
+    </ion-slides>
+  </div>
+  
+  <ion-card  class="animated fadeIn">
+    <div class="card-thumb">
+      <div class="card-tag-new"translate></div>
+      <div class="card-tags">
+        <div class="card-tag-off">{{'SALE'|translate}}</div>
+      </div> <!-- 2.0 updates -->
+      <img class="image" src="../../assets/avatar.png"  />
+    </div>
+    <ion-card-content>
+      <ion-card-title>
+        <div class="line-clamp" >name</div>
+      </ion-card-title>
+      <ion-row class="card-attr">
+        <ion-col col-10>
+          <h4 >headingTEXT</h4>
+        </ion-col>
+        <!-- <h3 *ngIf="p.type=='grouped'" no-margin dark> -->
+  
+        <!-- </h3> -->
+        <ion-col text-center col-2>
+          <ion-icon ></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  
+    <ion-buttons class="bar-buttons-remove" >
+      <button ion-button block color="danger" >
+        {{'REMOVE'|translate}}
+      </button>
+    </ion-buttons>
+  
+    <ion-buttons >
+      <button ion-button block color="secondary" 
+       >{{'ADD TO CART'|translate}}</button>
+      <button ion-button block color="secondary"
+        >{{'DETAILS'|translate}}</button>
+      <button ion-button block color="danger"
+        >{{'OUT OF STOCK'|translate}}</button>
+    </ion-buttons>
+  
+    <ion-buttons class="bar-buttons-remove">
+      <button ion-button block color="danger">{{'REMOVE'|translate}}</button>
+    </ion-buttons>
+  
+    <ion-row class="card-add-cart">
+      <ion-icon name="checkmark-circle"></ion-icon>
+    </ion-row>
+  </ion-card>
+  
+  
+  <ion-grid>
+    <ion-col *ngFor="let p of products" col-6>
+      <product [data]="p" [type]="'normal'"></product>
+    </ion-col>
+  
+    <ion-col *ngIf="products.length==0 && !loadingServerData" col-12 class="animated fadeIn">
+      <h6 text-center>{{'No Products Found!'|translate}}</h6>
+    </ion-col>
+  </ion-grid>
+  
+  <ion-infinite-scroll #infinite (ionInfinite)="getProducts($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
